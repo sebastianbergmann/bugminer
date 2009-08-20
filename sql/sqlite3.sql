@@ -10,7 +10,7 @@
 --
 --   * Redistributions of source code must retain the above copyright
 --     notice, this list of conditions and the following disclaimer.
--- 
+--
 --   * Redistributions in binary form must reproduce the above copyright
 --     notice, this list of conditions and the following disclaimer in
 --     the documentation and/or other materials provided with the
@@ -92,7 +92,7 @@ SELECT f1.function  AS changed_function,
  GROUP BY changed_function, co_changed_function
  ORDER BY changed_function ASC,
           co_changed_function_count DESC;
-          
+
 CREATE VIEW IF NOT EXISTS bug_prone_paths AS
 SELECT path_id, path, COUNT(*) AS path_count
   FROM paths
