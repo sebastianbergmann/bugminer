@@ -55,7 +55,7 @@ function __autoload($className)
  * @copyright 2011 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version   Release: @package_version@
- * @link      http://github.com/sebastianbergmann/phpdep/tree
+ * @link      http://github.com/sebastianbergmann/bugminer/tree
  * @since     Class available since Release 1.0.0
  */
 class BugMiner_TextUI_Command
