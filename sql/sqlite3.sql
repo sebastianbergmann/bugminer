@@ -1,7 +1,7 @@
 --
 -- BugMiner
 --
--- Copyright (c) 2007-2010, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+-- Copyright (c) 2007-2012, Sebastian Bergmann <sb@sebastian-bergmann.de>.
 -- All rights reserved.
 --
 -- Redistribution and use in source and binary forms, with or without
