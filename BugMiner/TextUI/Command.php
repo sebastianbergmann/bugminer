@@ -2,7 +2,7 @@
 /**
  * BugMiner
  *
- * Copyright (c) 2007-2013, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2007-2013, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,8 +35,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package   BugMiner
- * @author    Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright 2007-2013 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author    Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright 2007-2013 Sebastian Bergmann <sebastian@phpunit.de>
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @since     File available since Release 1.0.0
  */
@@ -51,8 +51,8 @@ function __autoload($className)
 /**
  * TextUI frontend for BugMiner.
  *
- * @author    Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright 2007-2013 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author    Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright 2007-2013 Sebastian Bergmann <sebastian@phpunit.de>
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version   Release: @package_version@
  * @link      http://github.com/sebastianbergmann/bugminer/tree
