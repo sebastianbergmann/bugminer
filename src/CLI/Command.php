@@ -67,6 +67,11 @@ class Command extends AbstractCommand
     {
         $this->setName('bugminer')
              ->addArgument(
+                 'database',
+                 InputArgument::REQUIRED,
+                 'Path to the SQLite3 database'
+             )
+             ->addArgument(
                  'repository',
                  InputArgument::REQUIRED,
                  'Path to the Git repository'
@@ -109,6 +114,7 @@ class Command extends AbstractCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $database      = $input->getArgument('database');
         $repository    = $input->getArgument('repository');
         $git           = new Git($repository);
         $currentBranch = $git->getCurrentBranch();
