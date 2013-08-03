@@ -60,6 +60,94 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class Command extends AbstractCommand
 {
+    const SCHEMA = '
+CREATE TABLE IF NOT EXISTS bugs(
+  bug_id   INTEGER,
+  revision INTEGER
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS bug_id_revision ON bugs (bug_id, revision);
+
+CREATE TABLE IF NOT EXISTS functions(
+  function_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  function    STRING
+);
+
+CREATE TABLE IF NOT EXISTS function_changes(
+  function_id  INTEGER,
+  revision     INTEGER
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS function_id_revision ON function_changes (function_id, revision);
+
+CREATE TABLE IF NOT EXISTS paths(
+  path_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  path    STRING
+);
+
+CREATE TABLE IF NOT EXISTS path_changes(
+  path_id  INTEGER,
+  revision INTEGER
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS path_id_revision ON path_changes (path_id, revision);
+
+CREATE VIEW IF NOT EXISTS bug_prone_functions AS
+SELECT function_id, function, COUNT(*) AS function_count
+  FROM functions
+  JOIN function_changes USING (function_id)
+  JOIN bugs             USING (revision)
+ GROUP BY function_id
+ ORDER BY function_count DESC;
+
+CREATE VIEW IF NOT EXISTS frequently_changed_functions AS
+SELECT function_id, function, COUNT(*) AS function_count
+  FROM functions
+  JOIN function_changes USING (function_id)
+ GROUP BY function_id
+ ORDER BY function_count DESC;
+
+CREATE VIEW IF NOT EXISTS co_changed_functions AS
+SELECT f1.function  AS changed_function,
+       f2.function  AS co_changed_function,
+       COUNT(*)     AS co_changed_function_count
+  FROM function_changes c1
+  JOIN function_changes c2 ON c1.revision = c2.revision
+   AND c1.function_id != c2.function_id
+  JOIN functions f1 ON c1.function_id = f1.function_id
+  JOIN functions f2 ON c2.function_id = f2.function_id
+ GROUP BY changed_function, co_changed_function
+ ORDER BY changed_function ASC,
+          co_changed_function_count DESC;
+
+CREATE VIEW IF NOT EXISTS bug_prone_paths AS
+SELECT path_id, path, COUNT(*) AS path_count
+  FROM paths
+  JOIN path_changes USING (path_id)
+  JOIN bugs         USING (revision)
+ GROUP BY path_id
+ ORDER BY path_count DESC;
+
+CREATE VIEW IF NOT EXISTS frequently_changed_paths AS
+SELECT path_id, path, COUNT(*) AS path_count
+  FROM paths
+  JOIN path_changes USING (path_id)
+ GROUP BY path_id
+ ORDER BY path_count DESC;
+
+CREATE VIEW IF NOT EXISTS co_changed_paths AS
+SELECT p1.path  AS changed_path,
+       p2.path  AS co_changed_path,
+       COUNT(*) AS co_changed_path_count
+  FROM path_changes c1
+  JOIN path_changes c2 ON c1.revision = c2.revision
+   AND c1.path_id != c2.path_id
+  JOIN paths p1 ON c1.path_id = p1.path_id
+  JOIN paths p2 ON c2.path_id = p2.path_id
+ GROUP BY changed_path, co_changed_path
+ ORDER BY changed_path ASC,
+          co_changed_path_count DESC;';
+
     /**
      * Configures the current command.
      */
@@ -114,7 +202,7 @@ class Command extends AbstractCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $database      = $input->getArgument('database');
+        $db            = $this->handleDatabase($input->getArgument('database'));
         $repository    = $input->getArgument('repository');
         $git           = new Git($repository);
         $currentBranch = $git->getCurrentBranch();
@@ -137,7 +225,7 @@ class Command extends AbstractCommand
 
         foreach ($revisions as $revision) {
             $git->checkout($revision['sha1']);
-            $this->process($finder->findFiles());
+            $this->process($finder->findFiles(), $db);
 
             if ($progressHelper !== null) {
                 $progressHelper->advance();
@@ -157,9 +245,10 @@ class Command extends AbstractCommand
     }
 
     /**
-     * @param array $files
+     * @param array    $files
+     * @param \SQLite3 $db
      */
-    private function process(array $files)
+    private function process(array $files, \SQLite3 $db)
     {
         foreach ($files as $file) {
         }
@@ -180,5 +269,26 @@ class Command extends AbstractCommand
         }
 
         return $result;
+    }
+
+    /**
+     * @param  string $filename
+     * @return \SQLite3
+     */
+    private function handleDatabase($filename)
+    {
+        $create = false;
+
+        if (!file_exists($filename)) {
+            $create = true;
+        }
+
+        $db = new \SQLite3($filename);
+
+        if ($create) {
+            $db->exec(self::SCHEMA);
+        }
+
+        return $db;
     }
 }
