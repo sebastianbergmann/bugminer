@@ -133,6 +133,13 @@
    </fileset>
   </copy>
 
+  <copy todir="${basedir}/build/phar/php-timer">
+   <fileset dir="${basedir}/vendor/phpunit/php-timer/PHP">
+    <include name="**/*.php" />
+    <exclude name="**/Autoload.php" />
+   </fileset>
+  </copy>
+
   <copy todir="${basedir}/build/phar/symfony">
    <fileset dir="${basedir}/vendor/symfony">
     <include name="**/*.php" />

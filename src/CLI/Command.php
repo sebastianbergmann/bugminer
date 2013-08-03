@@ -93,6 +93,12 @@ class Command extends AbstractCommand
                  null,
                  InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
                  'Exclude a directory from code analysis'
+             )
+             ->addOption(
+                 'progress',
+                 null,
+                 InputOption::VALUE_NONE,
+                 'Show progress bar'
              );
     }
 
@@ -106,6 +112,55 @@ class Command extends AbstractCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $arguments     = $input->getArgument('values');
+        $directory     = $arguments[0];
+        $git           = new Git($directory);
+        $currentBranch = $git->getCurrentBranch();
+        $revisions     = $git->getRevisions();
+        $quiet         = $output->getVerbosity() == OutputInterface::VERBOSITY_QUIET;
+
+        $finder = new FinderFacade(
+            array($arguments[0]),
+            $input->getOption('exclude'),
+            $this->handleCSVOption($input, 'names'),
+            $this->handleCSVOption($input, 'names-exclude')
+        );
+
+        $progressHelper = null;
+
+        if ($input->getOption('progress')) {
+            $progressHelper = $this->getHelperSet()->get('progress');
+            $progressHelper->start($output, count($revisions));
+        }
+
+        foreach ($revisions as $revision) {
+            $git->checkout($revision['sha1']);
+            $this->process($finder->findFiles());
+
+            if ($progressHelper !== null) {
+                $progressHelper->advance();
+            }
+        }
+
+        $git->checkout($currentBranch);
+
+        if ($input->getOption('progress')) {
+            $progressHelper->finish();
+            $output->writeln('');
+        }
+
+        if (!$quiet) {
+            $output->writeln(\PHP_Timer::resourceUsage());
+        }
+    }
+
+    /**
+     * @param array $files
+     */
+    private function process(array $files)
+    {
+        foreach ($files as $file) {
+        }
     }
 
     /**
