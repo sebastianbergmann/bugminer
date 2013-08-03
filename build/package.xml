@@ -17,56 +17,71 @@
   <email>sb@sebastian-bergmann.de</email>
   <active>yes</active>
  </lead>
- <date>2011-MM-DD</date>
+ <date>201Y-MM-MM</date>
  <version>
   <release>1.0.0</release>
   <api>1.0.0</api>
  </version>
  <stability>
-  <release>stable</release>
-  <api>stable</api>
+  <release>devel</release>
+  <api>devel</api>
  </stability>
- <license>BSD License</license>
+ <license>The BSD 3-Clause License</license>
  <notes>http://github.com/sebastianbergmann/bugminer/tree</notes>
  <contents>
   <dir name="/">
-   <dir name="BugMiner">
-    <dir name="TextUI">
-     <file baseinstalldir="/" name="Command.php" role="php">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
+   <dir name="SebastianBergmann">
+    <dir name="BugMiner">
+     <dir name="CLI">
+      <file baseinstalldir="/" name="Application.php" role="php" />
+      <file baseinstalldir="/" name="Command.php" role="php" />
+     </dir>
+     <file baseinstalldir="/" name="autoload.php" role="php" />
     </dir>
    </dir>
    <file baseinstalldir="/" name="bugminer.php" role="script">
     <tasks:replace from="/usr/bin/env php" to="php_bin" type="pear-config"/>
     <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-    <tasks:replace from="@package_version@" to="version" type="package-info" />
    </file>
    <file baseinstalldir="/" name="bugminer.bat" role="script">
     <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
     <tasks:replace from="@bin_dir@" to="bin_dir" type="pear-config" />
-    <tasks:replace from="@package_version@" to="version" type="package-info" />
    </file>
+   <file baseinstalldir="/" name="LICENSE" role="doc"/>
+   <file baseinstalldir="/" name="README.md" role="doc"/>
   </dir>
  </contents>
  <dependencies>
   <required>
    <php>
-    <min>5.2.7</min>
+    <min>5.3.3</min>
    </php>
    <pearinstaller>
     <min>1.9.4</min>
    </pearinstaller>
    <package>
-    <name>PHP_Timer</name>
+    <name>Console</name>
+    <channel>pear.symfony.com</channel>
+    <min>2.2.0</min>
+   </package>
+   <package>
+    <name>FinderFacade</name>
+    <channel>pear.phpunit.de</channel>
+    <min>1.1.0</min>
+   </package>
+   <package>
+    <name>Git</name>
     <channel>pear.phpunit.de</channel>
     <min>1.0.0</min>
    </package>
    <package>
-    <name>ConsoleTools</name>
-    <channel>components.ez.no</channel>
-    <min>1.6</min>
+    <name>Version</name>
+    <channel>pear.phpunit.de</channel>
+    <min>1.0.0</min>
    </package>
+   <extension>
+    <name>tokenizer</name>
+   </extension>
   </required>
  </dependencies>
  <phprelease>

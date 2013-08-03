@@ -1,0 +1,36 @@
+{
+    "name": "sebastian/bugminer",
+    "description": "Mines a source code repository for bug and churn information.",
+    "homepage": "https://github.com/sebastianbergmann/bugminer",
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Sebastian Bergmann",
+            "email": "sebastian@phpunit.de",
+            "role": "lead"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/sebastianbergmann/bugminer/issues"
+    },
+    "require": {
+        "php": ">=5.3.3",
+        "sebastian/finder-facade": ">=1.1.0",
+        "sebastian/git": ">=1.0.0",
+        "sebastian/version": ">=1.0.0",
+        "symfony/console": ">=2.2.0"
+    },
+    "autoload": {
+        "classmap": [
+            "src/"
+        ]
+    },
+    "bin": [
+        "composer/bin/bugminer"
+    ],
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}

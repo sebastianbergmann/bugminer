@@ -1,4 +1,3 @@
-#!/usr/bin/env php
 <?php
 /**
  * BugMiner
@@ -38,15 +37,30 @@
  * @package   BugMiner
  * @author    Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright 2007-2013 Sebastian Bergmann <sebastian@phpunit.de>
- * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @license   http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @since     File available since Release 1.0.0
  */
 
-if (strpos('@php_bin@', '@php_bin') === 0) {
-    require __DIR__ . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'autoload.php';
-} else {
-    require 'SebastianBergmann/BugMiner/autoload.php';
-}
+require_once 'SebastianBergmann/FinderFacade/autoload.php';
+require_once 'SebastianBergmann/Git/autoload.php';
+require_once 'SebastianBergmann/Version/autoload.php';
+require_once 'Symfony/Component/Console/autoloader.php';
 
-$application = new SebastianBergmann\BugMiner\CLI\Application;
-$application->run();
+spl_autoload_register(
+    function($class) {
+        static $classes = null;
+
+        if ($classes === null) {
+            $classes = array(
+              'sebastianbergmann\\bugminer\\cli\\application' => '/CLI/Application.php',
+              'sebastianbergmann\\bugminer\\cli\\command' => '/CLI/Command.php'
+            );
+        }
+
+        $cn = strtolower($class);
+
+        if (isset($classes[$cn])) {
+            require __DIR__ . $classes[$cn];
+        }
+    }
+);
