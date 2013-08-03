@@ -66,13 +66,10 @@ class Command extends AbstractCommand
     protected function configure()
     {
         $this->setName('bugminer')
-             ->setDefinition(
-                 array(
-                     new InputArgument(
-                         'values',
-                         InputArgument::IS_ARRAY
-                     )
-                 )
+             ->addArgument(
+                 'repository',
+                 InputArgument::REQUIRED,
+                 'Path to the Git repository'
              )
              ->addOption(
                  'names',
@@ -112,15 +109,14 @@ class Command extends AbstractCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $arguments     = $input->getArgument('values');
-        $directory     = $arguments[0];
-        $git           = new Git($directory);
+        $repository    = $input->getArgument('repository');
+        $git           = new Git($repository);
         $currentBranch = $git->getCurrentBranch();
         $revisions     = $git->getRevisions();
         $quiet         = $output->getVerbosity() == OutputInterface::VERBOSITY_QUIET;
 
         $finder = new FinderFacade(
-            array($arguments[0]),
+            array($repository),
             $input->getOption('exclude'),
             $this->handleCSVOption($input, 'names'),
             $this->handleCSVOption($input, 'names-exclude')
