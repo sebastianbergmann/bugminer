@@ -42,6 +42,7 @@
  */
 
 require_once 'SebastianBergmann/FinderFacade/autoload.php';
+require_once 'SebastianBergmann/Diff/autoload.php';
 require_once 'SebastianBergmann/Git/autoload.php';
 require_once 'SebastianBergmann/Version/autoload.php';
 require_once 'Symfony/Component/Console/autoloader.php';
@@ -54,7 +55,8 @@ spl_autoload_register(
         if ($classes === null) {
             $classes = array(
               'sebastianbergmann\\bugminer\\cli\\application' => '/CLI/Application.php',
-              'sebastianbergmann\\bugminer\\cli\\command' => '/CLI/Command.php'
+              'sebastianbergmann\\bugminer\\cli\\command' => '/CLI/Command.php',
+              'sebastianbergmann\\bugminer\\processor' => '/Processor.php'
             );
         }
 

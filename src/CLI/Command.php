@@ -43,8 +43,8 @@
 
 namespace SebastianBergmann\BugMiner\CLI;
 
+use SebastianBergmann\BugMiner\Processor;
 use SebastianBergmann\FinderFacade\FinderFacade;
-use SebastianBergmann\Git;
 use Symfony\Component\Console\Command\Command as AbstractCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -202,12 +202,9 @@ SELECT p1.path  AS changed_path,
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $db            = $this->handleDatabase($input->getArgument('database'));
-        $repository    = $input->getArgument('repository');
-        $git           = new Git($repository);
-        $currentBranch = $git->getCurrentBranch();
-        $revisions     = $git->getRevisions();
-        $quiet         = $output->getVerbosity() == OutputInterface::VERBOSITY_QUIET;
+        $db         = $this->handleDatabase($input->getArgument('database'));
+        $repository = $input->getArgument('repository');
+        $quiet      = $output->getVerbosity() == OutputInterface::VERBOSITY_QUIET;
 
         $finder = new FinderFacade(
             array($repository),
@@ -220,19 +217,17 @@ SELECT p1.path  AS changed_path,
 
         if ($input->getOption('progress')) {
             $progressHelper = $this->getHelperSet()->get('progress');
-            $progressHelper->start($output, count($revisions));
         }
 
-        foreach ($revisions as $revision) {
-            $git->checkout($revision['sha1']);
-            $this->process($finder->findFiles(), $db);
+        $processor = new Processor(
+            $repository,
+            $db,
+            $finder,
+            $output,
+            $progressHelper
+        );
 
-            if ($progressHelper !== null) {
-                $progressHelper->advance();
-            }
-        }
-
-        $git->checkout($currentBranch);
+        $processor->process();
 
         if ($input->getOption('progress')) {
             $progressHelper->finish();
@@ -241,16 +236,6 @@ SELECT p1.path  AS changed_path,
 
         if (!$quiet) {
             $output->writeln(\PHP_Timer::resourceUsage());
-        }
-    }
-
-    /**
-     * @param array    $files
-     * @param \SQLite3 $db
-     */
-    private function process(array $files, \SQLite3 $db)
-    {
-        foreach ($files as $file) {
         }
     }
 

@@ -70,9 +70,14 @@
     <min>1.1.0</min>
    </package>
    <package>
+    <name>Diff</name>
+    <channel>pear.phpunit.de</channel>
+    <min>1.1.0</min>
+   </package>
+   <package>
     <name>Git</name>
     <channel>pear.phpunit.de</channel>
-    <min>1.0.0</min>
+    <min>1.1.0</min>
    </package>
    <package>
     <name>Version</name>
