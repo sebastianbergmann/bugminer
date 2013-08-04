@@ -85,7 +85,7 @@ class Processor
         }
 
         if ($this->progressHelper !== null) {
-            $this->progressHelper->start($this->output, count($revisions) - 1);
+            $this->progressHelper->start($this->output, count($revisions) - 2);
         }
 
         for ($i = 1; $i < $count - 1; $i++) {
