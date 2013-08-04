@@ -133,7 +133,7 @@ class Processor
                 $lineNr = $chunk->getStart();
 
                 foreach ($chunk->getLines() as $line) {
-                    if ($line->getType() != Line::UNCHANGED) {
+                    if ($line->getType() == Line::ADDED) {
                         $function = $ts->getFunctionForLine($lineNr);
 
                         if ($function !== null &&
