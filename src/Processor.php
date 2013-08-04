@@ -81,7 +81,8 @@ class Processor
         $revisions     = $git->getRevisions();
         $count         = count($revisions);
 
-        if ($count < 2) {
+        if ($count < 3) {
+            return;
         }
 
         if ($this->progressHelper !== null) {
