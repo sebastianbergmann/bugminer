@@ -102,7 +102,11 @@ class Processor
 
             $git->checkout($revisions[$i]['sha1']);
 
-            $this->processRevision($diff, $this->findFiles());
+            $this->processRevision(
+                $revisions[$i]['message'],
+                $diff,
+                $this->findFiles()
+            );
 
             if ($this->progressHelper !== null) {
                 $this->progressHelper->advance();
@@ -112,11 +116,16 @@ class Processor
         $git->checkout($currentBranch);
     }
 
-    private function processRevision(array $diff, array $files)
+    private function processRevision($message, array $diff, array $files)
     {
         $files            = array_flip($files);
+        $bugfix           = false;
         $changedFiles     = array();
         $changedFunctions = array();
+
+        if (preg_match('/(Close|Closes|Fix|Fixes) #([0-9]*)/i', $message, $matches)) {
+            $bugfix = $matches[2];
+        }
 
         foreach ($diff as $_diff) {
             $file = substr($_diff->getFrom(), 2);
