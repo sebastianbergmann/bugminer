@@ -89,6 +89,11 @@
     <channel>pear.phpunit.de</channel>
     <min>1.0.4</min>
    </package>
+   <package>
+    <name>PHP_TokenStream</name>
+    <channel>pear.phpunit.de</channel>
+    <min>1.2.0</min>
+   </package>
    <extension>
     <name>tokenizer</name>
    </extension>

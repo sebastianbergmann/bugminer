@@ -43,6 +43,7 @@
 
 namespace SebastianBergmann\BugMiner;
 
+use SebastianBergmann\Diff\Line;
 use SebastianBergmann\Diff\Parser;
 use SebastianBergmann\FinderFacade\FinderFacade;
 use SebastianBergmann\Git;
@@ -111,7 +112,9 @@ class Processor
 
     private function processRevision(array $diff, array $files)
     {
-        $files = array_flip($files);
+        $files            = array_flip($files);
+        $changedFiles     = array();
+        $changedFunctions = array();
 
         foreach ($diff as $_diff) {
             $file = substr($_diff->getFrom(), 2);
@@ -119,7 +122,30 @@ class Processor
             if (!isset($files[$file])) {
                 continue;
             }
+
+            $changedFiles[] = $file;
+
+            $ts = new \PHP_Token_Stream($this->repository . '/' . $file);
+
+            foreach ($_diff->getChunks() as $chunk) {
+                $lineNr = $chunk->getStart();
+
+                foreach ($chunk->getLines() as $line) {
+                    if ($line->getType() != Line::UNCHANGED) {
+                        $function = $ts->getFunctionForLine($lineNr);
+
+                        if ($function !== NULL &&
+                            $function != 'anonymous function') {
+                            $changedFunctions[] = $function;
+                        }
+                    }
+
+                    $lineNr++;
+                }
+            }
         }
+
+        $changedFunctions = array_unique($changedFunctions);
     }
 
     private function findFiles()

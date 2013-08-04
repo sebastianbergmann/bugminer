@@ -47,6 +47,7 @@ require_once 'SebastianBergmann/Git/autoload.php';
 require_once 'SebastianBergmann/Version/autoload.php';
 require_once 'Symfony/Component/Console/autoloader.php';
 require_once 'PHP/Timer/Autoload.php';
+require_once 'PHP/Token/Stream/Autoload.php';
 
 spl_autoload_register(
     function($class) {
