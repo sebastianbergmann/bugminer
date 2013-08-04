@@ -134,7 +134,7 @@ class Processor
                     if ($line->getType() != Line::UNCHANGED) {
                         $function = $ts->getFunctionForLine($lineNr);
 
-                        if ($function !== NULL &&
+                        if ($function !== null &&
                             $function != 'anonymous function') {
                             $changedFunctions[] = $function;
                         }
