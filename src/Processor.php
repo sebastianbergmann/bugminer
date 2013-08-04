@@ -49,6 +49,8 @@ use SebastianBergmann\FinderFacade\FinderFacade;
 use SebastianBergmann\Git;
 use Symfony\Component\Console\Helper\ProgressHelper;
 use Symfony\Component\Console\Output\OutputInterface;
+use PHP_Token_Stream;
+use SQLite3;
 
 /**
  * @author    Sebastian Bergmann <sebastian@phpunit.de>
@@ -65,7 +67,7 @@ class Processor
     private $progressHelper;
     private $repository;
 
-    public function __construct($repository, \SQLite3 $db, FinderFacade $finder, OutputInterface $output, ProgressHelper $progressHelper = null)
+    public function __construct($repository, SQLite3 $db, FinderFacade $finder, OutputInterface $output, ProgressHelper $progressHelper = null)
     {
         $this->repository     = $repository;
         $this->db             = $db;
@@ -125,7 +127,7 @@ class Processor
 
             $changedFiles[] = $file;
 
-            $ts = new \PHP_Token_Stream($this->repository . '/' . $file);
+            $ts = new PHP_Token_Stream($this->repository . '/' . $file);
 
             foreach ($_diff->getChunks() as $chunk) {
                 $lineNr = $chunk->getStart();
