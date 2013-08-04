@@ -99,7 +99,7 @@ class Processor
 
             $git->checkout($revisions[$i]['sha1']);
 
-            $this->processRevision($this->finder->findFiles(), $diff);
+            $this->processRevision($diff, $this->findFiles());
 
             if ($this->progressHelper !== null) {
                 $this->progressHelper->advance();
@@ -109,7 +109,28 @@ class Processor
         $git->checkout($currentBranch);
     }
 
-    private function processRevision(array $files, array $diff)
+    private function processRevision(array $diff, array $files)
     {
+        $files = array_flip($files);
+
+        foreach ($diff as $_diff) {
+            $file = substr($_diff->getFrom(), 2);
+
+            if (!isset($files[$file])) {
+                continue;
+            }
+        }
+    }
+
+    private function findFiles()
+    {
+        $repository = $this->repository;
+
+        return array_map(
+            function ($v) use ($repository) {
+                return str_replace($repository . '/', '', $v);
+            },
+            $this->finder->findFiles()
+        );
     }
 }
