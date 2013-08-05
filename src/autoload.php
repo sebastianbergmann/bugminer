@@ -57,6 +57,7 @@ spl_autoload_register(
             $classes = array(
               'sebastianbergmann\\bugminer\\cli\\application' => '/CLI/Application.php',
               'sebastianbergmann\\bugminer\\cli\\command' => '/CLI/Command.php',
+              'sebastianbergmann\\bugminer\\database' => '/Database.php',
               'sebastianbergmann\\bugminer\\processor' => '/Processor.php'
             );
         }
