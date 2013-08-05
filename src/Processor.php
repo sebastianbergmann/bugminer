@@ -102,6 +102,7 @@ class Processor
             $git->checkout($revisions[$i]['sha1']);
 
             $this->processRevision(
+                $revisions[$i]['sha1'],
                 $revisions[$i]['message'],
                 $diff,
                 $this->findFiles()
@@ -115,7 +116,7 @@ class Processor
         $git->checkout($currentBranch);
     }
 
-    private function processRevision($message, array $diff, array $files)
+    private function processRevision($sha1, $message, array $diff, array $files)
     {
         $files            = array_flip($files);
         $bugfix           = false;
@@ -157,7 +158,12 @@ class Processor
             }
         }
 
-        $changedFunctions = array_unique($changedFunctions);
+        $this->db->addRevision(
+            $sha1,
+            $changedFiles,
+            array_unique($changedFunctions),
+            $bugfix
+        );
     }
 
     private function findFiles()
