@@ -151,7 +151,9 @@ class Processor
                         }
                     }
 
-                    $lineNr++;
+                    if ($line->getType() != Line::REMOVED) {
+                        $lineNr++;
+                    }
                 }
             }
         }
