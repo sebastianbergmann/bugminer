@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS function_changes(
 CREATE UNIQUE INDEX IF NOT EXISTS function_id_revision_id ON function_changes (function_id, revision_id);
 
 CREATE VIEW IF NOT EXISTS bug_prone_functions AS
-SELECT function_id, function, COUNT(*) AS function_count
+SELECT function, COUNT(*) AS function_count
   FROM functions
   JOIN function_changes USING (function_id)
   JOIN bugs             USING (revision_id)
@@ -100,7 +100,7 @@ SELECT function_id, function, COUNT(*) AS function_count
  ORDER BY function_count DESC;
 
 CREATE VIEW IF NOT EXISTS frequently_changed_functions AS
-SELECT function_id, function, COUNT(*) AS function_count
+SELECT function, COUNT(*) AS function_count
   FROM functions
   JOIN function_changes USING (function_id)
  GROUP BY function_id
@@ -120,7 +120,7 @@ SELECT f1.function  AS changed_function,
           co_changed_function_count DESC;
 
 CREATE VIEW IF NOT EXISTS bug_prone_files AS
-SELECT file_id, file, COUNT(*) AS file_count
+SELECT file, COUNT(*) AS file_count
   FROM files
   JOIN file_changes USING (file_id)
   JOIN bugs         USING (revision_id)
@@ -128,7 +128,7 @@ SELECT file_id, file, COUNT(*) AS file_count
  ORDER BY file_count DESC;
 
 CREATE VIEW IF NOT EXISTS frequently_changed_files AS
-SELECT file_id, file, COUNT(*) AS file_count
+SELECT file, COUNT(*) AS file_count
   FROM files
   JOIN file_changes USING (file_id)
  GROUP BY file_id
