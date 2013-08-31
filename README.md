@@ -2,10 +2,10 @@
 
 ## History and Status
 
-In 2007 I attended an "Open Source Jam" at the Google office in Zurich. On my
+In 2007 I attended an Open Source Jam at the Google office in Zurich. On my
 way there I read [this paper](https://ieeexplore.ieee.org/xpl/articleDetails.jsp?arnumber=1463228)
-and got the idea that I started hacking on right away. After all, train rides
-are usually boring. By the time the "Open Source Jam" started I had a working
+and got an idea that I started hacking on right away. After all, train rides
+are usually boring. By the time the Open Source Jam started I had a working
 script that could analyse the history of a PHP project in a Subversion
 repository and report the files that are most commonly changed in bug fix
 commits.
@@ -23,8 +23,8 @@ perform useful operations on the collected data.
 Not much happened since then. In August 2013 I remembered the tool yet again and
 was surprised that I had committed (not really something of value) to its Git
 repository over the years. I dusted off the code (of which there was not much)
-and there is now a working CLI tool that for now only itereates over all
-revisions of a Git repository. The actual data collection is not implemented
-yet.
+and there is now a working CLI tool itereates over all revisions of a Git
+repository, collects some data, and stores the data collected in an SQLite3
+database.
 
 Maybe if I get bored again I will get around to work on this tool again ...
