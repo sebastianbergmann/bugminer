@@ -23,8 +23,8 @@ perform useful operations on the collected data.
 Not much happened since then. In August 2013 I remembered the tool yet again and
 was surprised that I had committed (not really something of value) to its Git
 repository over the years. I dusted off the code (of which there was not much)
-and there is now a working CLI tool itereates over all revisions of a Git
-repository, collects some data, and stores the data collected in an SQLite3
+and there is now a working CLI tool that can iterate over all revisions of a Git
+repository, collect some data, and store the data collected in an SQLite3
 database.
 
-Maybe if I get bored again I will get around to work on this tool again ...
+Maybe if I get bored again I will get around to work on this tool once more ...
