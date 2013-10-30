@@ -15,7 +15,7 @@ that year I remembered this script and wrote about it. That article is still
 available [here](http://shiflett.org/blog/2007/dec/php-advent-calendar-day-3).
 
 One night in 2009 during an interesting discussion with Boris Erdmann and
-Kristian Köhntopp I remembered this script yet again. I wanted to expand on its
+Kristian Köhntopp I remembered this script again. I wanted to expand on its
 idea and store the data in a relational database to perform data mining using
 SQL. That night we developed an initial schema along with some first views that
 perform useful operations on the collected data.
