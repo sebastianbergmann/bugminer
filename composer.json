@@ -28,9 +28,6 @@
             "src/"
         ]
     },
-    "bin": [
-        "composer/bin/bugminer"
-    ],
     "extra": {
         "branch-alias": {
             "dev-master": "1.0-dev"
